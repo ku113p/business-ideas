@@ -97,6 +97,7 @@ pub async fn get_landing_page(db: &PgPool, path: &str) -> Result<LandingPage, sq
 pub struct Topic {
     pub id: Uuid,
     pub name: String,
+    pub tg_api: Option<serde_json::Value>
 }
 
 #[derive(Serialize, sqlx::FromRow)]
@@ -108,11 +109,12 @@ pub struct Message {
     pub topic_id: Uuid,
 }
 
-pub async fn create_topic(db: &PgPool, name: &str) -> Result<Topic, sqlx::Error> {
+pub async fn create_topic(db: &PgPool, name: &str, tg_api: Option<serde_json::Value>) -> Result<Topic, sqlx::Error> {
     sqlx::query_as!(
         Topic,
-        "INSERT INTO topic (name) VALUES ($1) RETURNING *",
-        name
+        "INSERT INTO topic (name, tg_api) VALUES ($1, $2::jsonb) RETURNING *",
+        name,
+        tg_api,
     )
     .fetch_one(db)
     .await

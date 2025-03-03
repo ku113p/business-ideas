@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "INSERT INTO topic (name) VALUES ($1) RETURNING *",
+  "query": "INSERT INTO topic (name, tg_api) VALUES ($1, $2::jsonb) RETURNING *",
   "describe": {
     "columns": [
       {
@@ -12,17 +12,24 @@
         "ordinal": 1,
         "name": "name",
         "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "tg_api",
+        "type_info": "Jsonb"
       }
     ],
     "parameters": {
       "Left": [
-        "Varchar"
+        "Varchar",
+        "Jsonb"
       ]
     },
     "nullable": [
       false,
-      false
+      false,
+      true
     ]
   },
-  "hash": "16be0bf0c5ef53868c0ca9704731dcf94a47085081b22dc10562f2f93da9f21b"
+  "hash": "08ce21f920b4e02f5aec861e4434ea25781fe7cd0d295621cdfae8aa7b619667"
 }
